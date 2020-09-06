@@ -7,4 +7,9 @@ public interface Constants {
     String CURRENT_CITY = "city";
     String PARCEL = "parcel";
 
+    String GET = "GET";
+    int MAX_TIMEOUT = 10000;
+
+    String LOG_TAG = "TAG";
+
 }
