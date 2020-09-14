@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myweatherapp.model.WeatherRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class WeatherFragment extends Fragment implements Constants {
+
 
     public static WeatherFragment create(Parcel parcel) {
         WeatherFragment wf = new WeatherFragment();
@@ -53,33 +56,40 @@ public class WeatherFragment extends Fragment implements Constants {
 
         final Parcel parcel = getParcel();
 
-        final WorkWithApi workWithApi = new WorkWithApi();
-        final Handler handler = new Handler();
+//        final WorkWithApi workWithApi = new WorkWithApi();
+//        final Handler handler = new Handler();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final WeatherRequest weatherRequest = workWithApi.getWeather(parcel.getCityName());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                                cityText.setText(String.format("%s",weatherRequest.getName()));
-                                weatherText.setText(String.format("%s °C", (int)weatherRequest.getMain().getTemp() - 273) );
-                                pressure.setText(String.format("%s мм рт. ст.", (int)(weatherRequest.getMain().getPressure()/1.332894736842105)));
-                                humidity.setText(String.format("%s", weatherRequest.getMain().getHumidity()) + " %");
-                                windSpeed.setText(String.format("%s м/с", (int)weatherRequest.getWind().getSpeed()));
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
+        cityText.setText(parcel.getCityName());
+        weatherText.setText(parcel.getWeatherIndex());
+        pressure.setText(parcel.getPressure());
+        humidity.setText(parcel.getHumidity());
+        windSpeed.setText(parcel.getWindSpeed());
 
-                } finally {
-                    workWithApi.closeConnection();
-                }
-
-            }
-
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    final WeatherRequest weatherRequest = workWithApi.getWeather(parcel.getCityName());
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                                cityText.setText(String.format("%s",weatherRequest.getName()));
+//                                weatherText.setText(String.format("%s °C", (int)weatherRequest.getMain().getTemp() - 273) );
+//                                pressure.setText(String.format("%s мм рт. ст.", (int)(weatherRequest.getMain().getPressure()/1.332894736842105)));
+//                                humidity.setText(String.format("%s", weatherRequest.getMain().getHumidity()) + " %");
+//                                windSpeed.setText(String.format("%s м/с", (int)weatherRequest.getWind().getSpeed()));
+//
+//                        }
+//                    });
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//
+//                } finally {
+//                    workWithApi.closeConnection();
+//                }
+//
+//            }
+//
+//        }).start();
     }
 }
