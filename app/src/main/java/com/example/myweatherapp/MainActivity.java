@@ -11,12 +11,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity implements Constants, NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
+    private  DialogBuilderFragment dialogBuilderFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dialogBuilderFragment = new DialogBuilderFragment();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -87,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
                             .commit();
                 drawer.closeDrawer(GravityCompat.START);
                     return true;
-                    case R.id.nav_slideshow:
-                        return true;
-                    case R.id.nav_tools:
-                        return true;
+//                    case R.id.nav_slideshow:
+//                        return true;
+//                    case R.id.nav_tools:
+//                        return true;
                     case R.id.nav_share:
                         return true;
                     case R.id.nav_send:
@@ -101,4 +106,14 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void onClickDialogBuilder(View view){
+        dialogBuilderFragment.show(getSupportFragmentManager(), "dialogBuilder");
+    }
+
+    public void onDialogResult(String resultDialog){
+        Toast.makeText(this, "Выбрано " + resultDialog, Toast.LENGTH_SHORT).show();
+
+    }
+
 }

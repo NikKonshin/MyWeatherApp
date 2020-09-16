@@ -41,4 +41,8 @@
     <string name="clear">Clear</string>
     <string name="search">Search</string>
     <string name="communicate">Communicate</string>
+
+    <string name="title_dialog">Важное Соообщение</string>
+    <string name="yes">Ok</string>
+    <string name="could">На улице холодно, одевайтесь теплее</string>
 </resources>
