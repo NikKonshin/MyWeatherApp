@@ -12,4 +12,10 @@ public interface Constants {
 
     String LOG_TAG = "TAG";
 
+    String CITY_NAME = "CITY";
+    String WEATHER = "WEATHER";
+    String PRESSURE = "PRESSURE";
+    String HUMIDITY = "HUMIDITY";
+    String WIND_SPEED = "WIND_SPEED";
+
 }

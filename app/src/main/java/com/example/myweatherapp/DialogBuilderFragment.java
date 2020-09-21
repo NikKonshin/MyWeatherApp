@@ -10,7 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class DialogBuilderFragment extends DialogFragment {
+    private String city;
 
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     @NonNull
     @Override
@@ -25,7 +29,7 @@ public class DialogBuilderFragment extends DialogFragment {
                         dismiss();
                         ((MainActivity)getActivity()).onDialogResult(getString(R.string.yes));
                     }
-                }).setMessage(R.string.could);
+                }).setMessage("В городе: " + city + " \n" + "На улице холодно, одевайтесь теплее");
         return builder.create();
     }
 }

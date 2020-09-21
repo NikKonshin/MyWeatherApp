@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class MainActivity extends AppCompatActivity implements Constants, NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
     private  DialogBuilderFragment dialogBuilderFragment;
+    private CitiesFragment citiesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-            CitiesFragment citiesFragment = new CitiesFragment();
+            citiesFragment = new CitiesFragment();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, citiesFragment).addToBackStack(null)
@@ -82,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
         int id = menuItem.getItemId();
         switch (id) {
             case R.id.nav_home:
+                if(getSupportFragmentManager().getPrimaryNavigationFragment() != citiesFragment ) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, citiesFragment)
+                            .commit();
+                }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_history:
@@ -107,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
         return true;
     }
 
-    public void onClickDialogBuilder(View view){
+    public void onClickDialogBuilder(View view, String city){
+        dialogBuilderFragment.setCity(city);
         dialogBuilderFragment.show(getSupportFragmentManager(), "dialogBuilder");
     }
 

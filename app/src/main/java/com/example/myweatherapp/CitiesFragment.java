@@ -1,7 +1,6 @@
 package com.example.myweatherapp;
 
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -10,18 +9,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.myweatherapp.model.WeatherRequest;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CitiesFragment extends Fragment implements Constants {
     private boolean isLandscape;
@@ -41,8 +32,7 @@ public class CitiesFragment extends Fragment implements Constants {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator_layout);
-        initList(view, savedInstanceState);
+        initList(view);
 
     }
 
@@ -73,62 +63,55 @@ public class CitiesFragment extends Fragment implements Constants {
     }
 
 
-    private void initList(View view, Bundle savedInstanceState) {
+    private void initList(View view) {
 
         final RecyclerView recyclerCity = view.findViewById(R.id.recyclerview_cities);
         citiesArray = getResources().getStringArray(R.array.citiesArray);
         final CitiesAdapter citiesAdapter = new CitiesAdapter(citiesArray);
         recyclerCity.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerCity.setAdapter(citiesAdapter);
-//        if (savedInstanceState == null){
         citiesAdapter.setCities(citiesArray);
         citiesAdapter.setOnCityClickListener(new CitiesAdapter.OnCityClickListener() {
+
             @Override
             public void onClicked(View view, final int position) {
-                final WorkWithApi workWithApi = new WorkWithApi();
-                final Handler handler = new Handler();
 
-                new Thread(new Runnable() {
+                final Handler handler = new Handler();
+                final MyThreadClass myThreadClass = new MyThreadClass("MyThreadClass");
+
+                Runnable task = new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            final WeatherRequest weatherRequest = workWithApi.getWeather(getResources().getStringArray(R.array.citiesArray)[position]);
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    String city = String.format("%s", weatherRequest.getName());
-                                    String weather = String.format("%s °C", (int) weatherRequest.getMain().getTemp() - 273);
-                                    String pressure = String.format("%s мм рт. ст.", (int) (weatherRequest.getMain().getPressure() / 1.332894736842105));
-                                    String humidity = String.format("%s", weatherRequest.getMain().getHumidity()) + " %";
-                                    String windSpeed = String.format("%s м/с", (int) weatherRequest.getWind().getSpeed());
-
-
-                                    historyAdapter.addItem(city, (int) weatherRequest.getMain().getTemp() - 273);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (myThreadClass.getWeather() != null) {
+                                    historyAdapter.addItem(myThreadClass.getCity(), Integer.parseInt(myThreadClass.getWeather()));
                                     saveAdapter.saveAdapter(historyAdapter);
-
-                                    parcel = new Parcel(city, weather, pressure, humidity, windSpeed);
-                                    if ((int) weatherRequest.getMain().getTemp() - 273 <= 11) {
-                                        ((MainActivity) getActivity()).onClickDialogBuilder(recyclerCity);
+                                    if (Integer.parseInt(myThreadClass.getWeather()) <= 11) {
+                                        ((MainActivity) getActivity()).onClickDialogBuilder(recyclerCity,myThreadClass.getCity());
                                     }
-                                    showWeather(parcel);
                                 }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
-
-                        } finally {
-                            workWithApi.closeConnection();
-                        }
+                                parcel = new Parcel(myThreadClass.getCity(), myThreadClass.getWeather(), myThreadClass.getPressure(),
+                                        myThreadClass.getHumidity(), myThreadClass.getWindSpeed());
+                                myThreadClass.quit();
+                                showWeather(parcel);
+                            }
+                        });
 
                     }
+                };
 
-                }).start();
+                myThreadClass.start();
+                myThreadClass.prepareHandler();
+                myThreadClass.setCity(getResources().getStringArray(R.array.citiesArray)[position]);
+                myThreadClass.getWeatherData();
+                myThreadClass.startFragmentWithData(task);
 
             }
         });
-
     }
+
 
     private void showWeather(final Parcel parcel) {
         if (isLandscape) {
@@ -141,6 +124,7 @@ public class CitiesFragment extends Fragment implements Constants {
                 ft.replace(R.id.weather_land, weatherFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
+
 
             }
         } else {
@@ -157,5 +141,8 @@ public class CitiesFragment extends Fragment implements Constants {
             }
         }
     }
+
+
 }
+
 

@@ -56,40 +56,11 @@ public class WeatherFragment extends Fragment implements Constants {
 
         final Parcel parcel = getParcel();
 
-//        final WorkWithApi workWithApi = new WorkWithApi();
-//        final Handler handler = new Handler();
 
-        cityText.setText(parcel.getCityName());
-        weatherText.setText(parcel.getWeatherIndex());
-        pressure.setText(parcel.getPressure());
-        humidity.setText(parcel.getHumidity());
-        windSpeed.setText(parcel.getWindSpeed());
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    final WeatherRequest weatherRequest = workWithApi.getWeather(parcel.getCityName());
-//                    handler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                                cityText.setText(String.format("%s",weatherRequest.getName()));
-//                                weatherText.setText(String.format("%s °C", (int)weatherRequest.getMain().getTemp() - 273) );
-//                                pressure.setText(String.format("%s мм рт. ст.", (int)(weatherRequest.getMain().getPressure()/1.332894736842105)));
-//                                humidity.setText(String.format("%s", weatherRequest.getMain().getHumidity()) + " %");
-//                                windSpeed.setText(String.format("%s м/с", (int)weatherRequest.getWind().getSpeed()));
-//
-//                        }
-//                    });
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//
-//                } finally {
-//                    workWithApi.closeConnection();
-//                }
-//
-//            }
-//
-//        }).start();
+        cityText.setText(String.format("%s",parcel.getCityName()));
+        weatherText.setText(String.format("%s °C",parcel.getWeatherIndex()));
+        pressure.setText(String.format("%s мм рт. ст.",parcel.getPressure()));
+        humidity.setText(String.format("%s ",parcel.getHumidity() + " %"));
+        windSpeed.setText(String.format("%s м/с",parcel.getWindSpeed()));
     }
 }
