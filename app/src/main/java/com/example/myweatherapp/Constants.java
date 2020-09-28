@@ -7,4 +7,15 @@ public interface Constants {
     String CURRENT_CITY = "city";
     String PARCEL = "parcel";
 
+    String GET = "GET";
+    int MAX_TIMEOUT = 10000;
+
+    String LOG_TAG = "TAG";
+
+    String CITY_NAME = "CITY";
+    String WEATHER = "WEATHER";
+    String PRESSURE = "PRESSURE";
+    String HUMIDITY = "HUMIDITY";
+    String WIND_SPEED = "WIND_SPEED";
+
 }
