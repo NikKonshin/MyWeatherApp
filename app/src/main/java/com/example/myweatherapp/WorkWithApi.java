@@ -2,6 +2,8 @@ package com.example.myweatherapp;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myweatherapp.model.Weather;
@@ -20,36 +22,41 @@ import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class WorkWithApi implements Constants {
 
     private HttpsURLConnection urlConnection = null;
-
-    public WeatherRequest getWeather(String city) throws IOException {
-        String url = String.format("https://api.openweathermap.org/data/2.5/weather?q=%s,RU&appid=%s",
-                city, BuildConfig.WEATHER_API_KEY);
+    private OpenWeather openWeather;
+    private Response<WeatherRequest> weatherRequestResponse;
 
 
-        final URL uri = new URL(url);
-
-        urlConnection = (HttpsURLConnection) uri.openConnection();
-        urlConnection.setRequestMethod(GET);
-        urlConnection.setReadTimeout(MAX_TIMEOUT);
-        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-        String result = getLines(in);
-        Gson gson = new Gson();
-        final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
-        return weatherRequest;
+    public void initRetrofit(){
+        Retrofit retrofit;
+        retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        openWeather = retrofit.create(OpenWeather.class);
+        System.out.println("initRetrofit() Сработал");
     }
 
-    private static String getLines(BufferedReader in) {
-        return in.lines().collect(Collectors.joining("\n"));
+    public WeatherRequest requestRetrofit(String city) throws IOException {
+        Call<WeatherRequest> weatherRequestCall = openWeather.loadWeather(city, BuildConfig.WEATHER_API_KEY );
+            weatherRequestResponse = weatherRequestCall.execute();
+
+            if (weatherRequestResponse.isSuccessful()){
+               return weatherRequestResponse.body();
+            }
+
+        return null;
     }
 
-    void closeConnection() {
-        if (urlConnection != null) {
-            urlConnection.disconnect();
-        }
-    }
+
+
 }
 
 

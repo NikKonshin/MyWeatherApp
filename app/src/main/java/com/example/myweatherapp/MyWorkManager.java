@@ -28,7 +28,7 @@ public class MyWorkManager extends Worker implements Constants {
 
         String cityName = getInputData().getString(CITY_NAME);
 
-        getWeth(cityName);
+//        getWeth(cityName);
 
 
         {
@@ -51,14 +51,14 @@ public class MyWorkManager extends Worker implements Constants {
             return Result.success(output);
         }
     }
-    void getWeth(String city){
-        final WorkWithApi workWithApi = new WorkWithApi();
-        try {
-            weatherRequest = workWithApi.getWeather(city);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            workWithApi.closeConnection();
-        }
-    }
+//    void getWeth(String city){
+//        final WorkWithApi workWithApi = new WorkWithApi();
+//        try {
+//            weatherRequest = workWithApi.getWeather(city);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            workWithApi.closeConnection();
+//        }
+//    }
 }
