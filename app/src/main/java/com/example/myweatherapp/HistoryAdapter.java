@@ -15,7 +15,12 @@ import java.util.List;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
    private List<String> citiesArray = new ArrayList<>();
    private List<Integer> weatherArray = new ArrayList<>();
+// NEW
+   private HistoryRequestSource historyRequestSource;
 
+    public HistoryAdapter(HistoryRequestSource historyRequestSource) {
+        this.historyRequestSource = historyRequestSource;
+    }
 //    public HistoryAdapter(List<String> citiesArray, List<Integer> weatherArray) {
 //        this.citiesArray = citiesArray;
 //        this.weatherArray = weatherArray;
@@ -30,15 +35,25 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(citiesArray.get(position), weatherArray.get(position));
+
+
+//        holder.bind(citiesArray.get(position), weatherArray.get(position));
+
+
+        // NEW
+        List<HistoryRequest> historyRequests = historyRequestSource.getAllHistory();
+        HistoryRequest historyRequest = historyRequests.get(position);
+        holder.cityView.setText(historyRequest.city_name);
+        holder.weatherView.setText(historyRequest.temperature);
     }
 
     @Override
     public int getItemCount() {
-        if(citiesArray == null){
-            return 0;
-        }
-        return citiesArray.size();
+//        if(citiesArray == null){
+//            return 0;
+//        }
+//        return citiesArray.size();
+        return (int) historyRequestSource.getCountHistoryRequest();
     }
 
      void addItem(String city, Integer weather){

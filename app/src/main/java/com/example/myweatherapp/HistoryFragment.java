@@ -56,9 +56,10 @@ public class HistoryFragment extends Fragment implements Constants{
         RecyclerView recyclerWeather = view.findViewById(R.id.recyclerview_history);
         final SaveAdapter saveAdapter = SaveAdapter.getInstanceAdapter();
         final HistoryAdapter weatherAdapter = (HistoryAdapter) saveAdapter.getAdapter();;
-        recyclerWeather.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        recyclerWeather.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,true));
         recyclerWeather.setAdapter(weatherAdapter);
 //        if (savedInstanceState == null){
+
 
 
 

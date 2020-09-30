@@ -2,6 +2,7 @@ package com.example.myweatherapp;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,9 @@ public class CitiesFragment extends Fragment implements Constants {
     private boolean isLandscape;
     private Parcel parcel;
     private String[] citiesArray;
-
-    private final HistoryAdapter historyAdapter = new HistoryAdapter();
+    //private final HistoryAdapter historyAdapter = new HistoryAdapter();
+    private HistoryAdapter historyAdapter;
+    private HistoryRequestSource historyRequestSource;
     private final SaveAdapter saveAdapter = SaveAdapter.getInstanceAdapter();
 
 
@@ -78,6 +80,8 @@ public class CitiesFragment extends Fragment implements Constants {
 
                 final Handler handler = new Handler();
                 final MyThreadClass myThreadClass = new MyThreadClass("MyThreadClass");
+                HistoryDao historyDao = App.getInstance().getHistoryDao();
+                historyRequestSource = new HistoryRequestSource(historyDao);
 
                 Runnable task = new Runnable() {
                     @Override
@@ -86,7 +90,14 @@ public class CitiesFragment extends Fragment implements Constants {
                             @Override
                             public void run() {
                                 if (myThreadClass.getWeather() != null) {
-                                    historyAdapter.addItem(myThreadClass.getCity(), Integer.parseInt(myThreadClass.getWeather()));
+                                    HistoryRequest historyRequest = new HistoryRequest();
+
+                                    historyRequest.city_name = myThreadClass.getCity();
+                                    historyRequest.temperature = myThreadClass.getWeather();
+                                    historyRequestSource.addHistory(historyRequest);
+
+                                    historyAdapter = new HistoryAdapter(historyRequestSource);
+//                                    historyAdapter.addItem(myThreadClass.getCity(), Integer.parseInt(myThreadClass.getWeather()));
                                     saveAdapter.saveAdapter(historyAdapter);
                                     if (Integer.parseInt(myThreadClass.getWeather()) <= 11) {
                                         ((MainActivity) getActivity()).onClickDialogBuilder(recyclerCity,myThreadClass.getCity());

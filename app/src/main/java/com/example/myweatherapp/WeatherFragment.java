@@ -1,5 +1,6 @@
 package com.example.myweatherapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -23,8 +24,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WeatherFragment extends Fragment implements Constants {
+import static android.content.Context.MODE_PRIVATE;
 
+public class WeatherFragment extends Fragment implements Constants {
+    String keys[] =  {"city","weather"};
 
     public static WeatherFragment create(Parcel parcel) {
         WeatherFragment wf = new WeatherFragment();
@@ -75,9 +78,24 @@ public class WeatherFragment extends Fragment implements Constants {
         windSpeed.setText(String.format("%s м/с",parcel.getWindSpeed()));
 
 
+    }
+    private void saveSharedPreference(SharedPreferences sharedPreferences){
+        String city =  getParcel().getCityName();
+        String temperature = getParcel().getWeatherIndex();
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(keys[0],city);
+        editor.putString(keys[1],temperature);
+        editor.apply();
 
+    }
 
+    private void loadSharedPreference(SharedPreferences sharedPreferences, TextView cityTW, TextView weather){
+        String city = sharedPreferences.getString(keys[0], "default");
+        String temperature = sharedPreferences.getString(keys[1], "default");
+
+        cityTW.setText(city);
+        weather.setText(temperature);
 
 
     }
