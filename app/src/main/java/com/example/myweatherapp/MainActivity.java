@@ -8,6 +8,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.style.BackgroundColorSpan;
 import android.view.Menu;
@@ -22,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
     private Toolbar toolbar;
     private  DialogBuilderFragment dialogBuilderFragment;
     private CitiesFragment citiesFragment;
+    private final BroadcastReceiver networkReceiver = new NetworkReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initNotificationChannel();
+        registerReceiver(networkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         dialogBuilderFragment = new DialogBuilderFragment();
 
@@ -52,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkReceiver);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
@@ -64,6 +80,17 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
             case R.id.action_settings:
                 Snackbar.make(toolbar, "Нажата кнопка меню", Snackbar.LENGTH_LONG).show();
                 return true;
+            case R.id.action_delete:
+                HistoryDao historyDao = App.getInstance().getHistoryDao();
+                HistoryRequestSource historyRequestSource = new HistoryRequestSource(historyDao);
+                historyRequestSource.deleteAllHistory();
+
+                HistoryFragment historyFragment1 = new HistoryFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, historyFragment1).addToBackStack(null)
+                        .commit();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -123,6 +150,15 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
     public void onDialogResult(String resultDialog){
         Toast.makeText(this, "Выбрано " + resultDialog, Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void initNotificationChannel(){
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = notificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("2","name",importance);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 }
