@@ -4,24 +4,34 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -30,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
     private  DialogBuilderFragment dialogBuilderFragment;
     private CitiesFragment citiesFragment;
     private final BroadcastReceiver networkReceiver = new NetworkReceiver();
+    private LocationManager locationManager;
+    private final int PERMISSION_REQUEST_CODE = 100;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
             citiesFragment = new CitiesFragment();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, citiesFragment).addToBackStack(null)
+                    .replace(R.id.fragment_container, citiesFragment)
                     .commit();
         }
 
@@ -85,11 +100,7 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
                 HistoryRequestSource historyRequestSource = new HistoryRequestSource(historyDao);
                 historyRequestSource.deleteAllHistory();
 
-                HistoryFragment historyFragment1 = new HistoryFragment();
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, historyFragment1).addToBackStack(null)
-                        .commit();
+                openHistoryFragment();
 
         }
         return super.onOptionsItemSelected(item);
@@ -120,17 +131,10 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
             case R.id.nav_history:
-                    HistoryFragment historyFragment1 = new HistoryFragment();
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, historyFragment1).addToBackStack(null)
-                            .commit();
+                openHistoryFragment();
+
                 drawer.closeDrawer(GravityCompat.START);
                     return true;
-//                    case R.id.nav_slideshow:
-//                        return true;
-//                    case R.id.nav_tools:
-//                        return true;
                     case R.id.nav_share:
                         return true;
                     case R.id.nav_send:
@@ -160,5 +164,23 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    public void openHistoryFragment(){
+        HistoryFragment historyFragment1 = new HistoryFragment(this);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, historyFragment1)
+                .commit();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length == 2 &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+            }
+        }
+    }
+
 
 }

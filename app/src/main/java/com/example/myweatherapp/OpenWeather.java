@@ -9,4 +9,7 @@ import com.example.myweatherapp.model.WeatherRequest;
 public interface OpenWeather {
     @GET("data/2.5/weather")
     Call<WeatherRequest> loadWeather(@Query("q") String cityCountry, @Query("appid") String keyApi);
+
+    @GET("data/2.5/weather")
+    Call<WeatherRequest> loadWeatherLatLng(@Query("lat") double lat,@Query("lon") double lon, @Query("appid") String keyApi);
 }

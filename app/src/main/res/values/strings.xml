@@ -45,4 +45,7 @@
     <string name="title_dialog">Важное Соообщение</string>
     <string name="yes">Ok</string>
     <string name="could">На улице холодно, одевайтесь теплее</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
 </resources>

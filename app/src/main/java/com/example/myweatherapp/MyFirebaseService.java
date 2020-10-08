@@ -13,7 +13,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseService extends FirebaseMessagingService {
-    int messageId = 1000;
+    private int messageId = 1000;
     public MyFirebaseService() {
     }
 

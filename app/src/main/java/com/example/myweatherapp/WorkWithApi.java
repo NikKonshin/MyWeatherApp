@@ -33,6 +33,7 @@ public class WorkWithApi implements Constants {
     private HttpsURLConnection urlConnection = null;
     private OpenWeather openWeather;
     private Response<WeatherRequest> weatherRequestResponse;
+    private String TAG = "WorkWithApi";
 
 
     public void initRetrofit(){
@@ -41,7 +42,8 @@ public class WorkWithApi implements Constants {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         openWeather = retrofit.create(OpenWeather.class);
-        System.out.println("initRetrofit() Сработал");
+        Log.d(TAG,"initRetrofit() Сработал");
+
     }
 
     public WeatherRequest requestRetrofit(String city) throws IOException {
@@ -51,6 +53,16 @@ public class WorkWithApi implements Constants {
             if (weatherRequestResponse.isSuccessful()){
                return weatherRequestResponse.body();
             }
+
+        return null;
+    }
+    public WeatherRequest requestRetrofitLatLng(double lat,double lng) throws IOException {
+        Call<WeatherRequest> weatherRequestCall = openWeather.loadWeatherLatLng(lat,lng, BuildConfig.WEATHER_API_KEY );
+        weatherRequestResponse = weatherRequestCall.execute();
+
+        if (weatherRequestResponse.isSuccessful()){
+            return weatherRequestResponse.body();
+        }
 
         return null;
     }

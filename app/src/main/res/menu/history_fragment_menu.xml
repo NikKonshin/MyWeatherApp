@@ -6,15 +6,10 @@
     tools:context=".MainActivity"
     >
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="Настройки"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/action_delete"
         android:orderInCategory="50"
         android:title="Удалить"
         android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom"
-        android:visible="false"/>
+        android:visible="true"/>
 </menu>
