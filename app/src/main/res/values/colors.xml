@@ -5,4 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorYellow">#FFFF00 </color>
     <color name="colorPurple">#800080</color>
+    <color name="colorButton">#F0F8FF</color>
+    <color name="colorTextButton">#6D8EAA</color>
+    <color name="colorStrokeButton">#6D8EAA</color>
 </resources>
