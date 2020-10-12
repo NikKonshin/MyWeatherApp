@@ -14,6 +14,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseService extends FirebaseMessagingService {
     private int messageId = 1000;
+    private String TAG = "MyFirebaseService";
     public MyFirebaseService() {
     }
 
@@ -37,6 +38,6 @@ public class MyFirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String s) {
-        Log.d(MyFirebaseService.class.getName(), "Token: " + s);
+        Log.d(TAG, "Token: " + s);
     }
 }

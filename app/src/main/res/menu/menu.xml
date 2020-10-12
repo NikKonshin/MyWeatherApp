@@ -17,4 +17,9 @@
         android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom"
         android:visible="false"/>
+    <item
+        android:id="@+id/action_LoginOut"
+        android:orderInCategory="100"
+        android:title="Выйти"
+        app:showAsAction="never"/>
 </menu>

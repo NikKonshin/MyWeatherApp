@@ -32,8 +32,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements Constants, NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
     private final BroadcastReceiver networkReceiver = new NetworkReceiver();
     private LocationManager locationManager;
     private final int PERMISSION_REQUEST_CODE = 100;
+    private AuthenticationFragment authenticationFragment;
+    private String TAG = "MainActivity123";
 
 
 
@@ -66,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
 
 
         if (savedInstanceState == null) {
-            citiesFragment = new CitiesFragment();
+            authenticationFragment = new AuthenticationFragment();
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, citiesFragment)
+                    .replace(R.id.fragment_container,authenticationFragment)
                     .commit();
         }
 
@@ -101,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
                 historyRequestSource.deleteAllHistory();
 
                 openHistoryFragment();
+            case R.id.action_LoginOut:
+
 
         }
         return super.onOptionsItemSelected(item);
@@ -127,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_container, citiesFragment)
                             .commit();
+                } else {
+                    openCitiesFragment();
                 }
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
@@ -135,6 +144,21 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
 
                 drawer.closeDrawer(GravityCompat.START);
                     return true;
+            case R.id.nav_auth:
+                if(getSupportFragmentManager().getPrimaryNavigationFragment() != authenticationFragment ){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container,authenticationFragment)
+                            .commit();
+                } else {
+                    authenticationFragment = new AuthenticationFragment();
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container,authenticationFragment)
+                            .commit();
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+
                     case R.id.nav_share:
                         return true;
                     case R.id.nav_send:
@@ -180,6 +204,14 @@ public class MainActivity extends AppCompatActivity implements Constants, Naviga
                     (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
             }
         }
+    }
+    private void openCitiesFragment() {
+        citiesFragment = new CitiesFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, citiesFragment)
+                .commit();
+        Log.d(TAG, "openCitiesFragment()");
     }
 
 

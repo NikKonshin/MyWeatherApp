@@ -1,6 +1,9 @@
 package com.example.myweatherapp;
 
 import android.Manifest;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Address;
@@ -10,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +24,14 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myweatherapp.model.WeatherRequest;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -242,7 +248,7 @@ public class CitiesFragment extends Fragment implements Constants {
 
     public void setLocation(Location location) {
         this.location = location;
-       // getAddress(location);
+        getAddress(location);
 
     }
 
