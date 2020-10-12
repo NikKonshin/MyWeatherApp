@@ -10,44 +10,118 @@
     <TextView
         android:id="@+id/text_city_in_weather_fragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorButton"
         android:textSize="30dp"
-        android:textColor="@android:color/holo_orange_dark"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/text_pressure"
         app:layout_constraintEnd_toStartOf="@id/text_weather_in_weather_fragment"
-        app:layout_constraintBottom_toTopOf="@id/recycler_date_in_weather_fragment"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_weather_in_weather_fragment"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:textSize="30dp"
-        android:textColor="@android:color/holo_orange_dark"
+        android:textAlignment="center"
+        android:textColor="@android:color/primary_text_dark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text_city_in_weather_fragment"
-        app:layout_constraintBottom_toTopOf="@id/recycler_weather_in_weather_fragment"
+        app:layout_constraintBottom_toTopOf="@id/text_pressure_in_weather_fragment"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_date_in_weather_fragment"
+    <TextView
+        android:id="@+id/text_pressure"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/text_city_in_weather_fragment"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:text="Давление:"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorButton"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@id/text_humidity"
+        app:layout_constraintEnd_toStartOf="@id/text_pressure_in_weather_fragment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/text_weather_in_weather_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_weather_in_weather_fragment"
+        app:layout_constraintTop_toBottomOf="@id/text_city_in_weather_fragment" />
+
+    <TextView
+        android:id="@+id/text_pressure_in_weather_fragment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorButton"
         app:layout_constraintTop_toBottomOf="@id/text_weather_in_weather_fragment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_city_in_weather_fragment"
+        app:layout_constraintStart_toEndOf="@id/text_pressure"
+        app:layout_constraintBottom_toTopOf="@id/text_humidity_in_weather_fragment"
+        />
+
+    <TextView
+        android:id="@+id/text_humidity"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:text="Влажность:"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorButton"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@id/text_windSpeed"
+        app:layout_constraintEnd_toStartOf="@id/text_humidity_in_weather_fragment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_pressure" />
+
+    <TextView
+        android:id="@+id/text_humidity_in_weather_fragment"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorButton"
+        app:layout_constraintTop_toBottomOf="@id/text_pressure_in_weather_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_pressure"
+        app:layout_constraintBottom_toTopOf="@id/text_windSpeed_in_weather_fragment"
+        />
+
+    <TextView
+        android:id="@+id/text_windSpeed"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:text="Скорость ветра:"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorButton"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toStartOf="@id/text_windSpeed_in_weather_fragment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_humidity" />
+
+    <TextView
+        android:id="@+id/text_windSpeed_in_weather_fragment"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorButton"
+        app:layout_constraintTop_toBottomOf="@id/text_humidity_in_weather_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_humidity"
+        />
+    <ImageView
+        android:id="@+id/image_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_windSpeed_in_weather_fragment"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
